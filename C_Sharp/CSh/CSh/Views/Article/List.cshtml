@@ -1,0 +1,40 @@
+﻿@using CSh.Models
+@using PagedList.Mvc
+@using PagedList
+@model PagedList.IPagedList<CSh.Models.Article>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "List";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var article in Model)
+        {
+            <div class="col-sm-10">
+                <article>
+                    <header>
+                        <h2 class="articleTithel">
+                            @Html.ActionLink(@article.Title, "Details", "Article", new { @id = article.Id }, null)
+                        </h2>
+                    </header>
+                    <p class="pBlog">
+                        @Utilities.ArticlePeace(article.Content)
+                    </p>
+                    <footer class="pull-right">
+                        <small class="authorColor">
+                            @article.Author.FullName
+                        </small>
+                    </footer>
+                </article>
+            </div>
+        }
+    </div>
+</div>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("List", new { page}))
+<hr />
+
